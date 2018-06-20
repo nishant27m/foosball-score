@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import BookList from '../containers/book_list';
+import PlayerAdd from '../containers/player_add';
 import Sidebar from './sidebar'
 
 export default class App extends Component {
@@ -7,7 +7,7 @@ export default class App extends Component {
     return (
         <div>
             <Sidebar/>
-            <BookList/>
+            <PlayerAdd/>
          </div>
 
     );
