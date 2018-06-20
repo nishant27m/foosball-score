@@ -7,7 +7,7 @@ export default class App extends Component {
     return (
         <div>
             <Sidebar/>
-            <PlayerAdd/>
+            {this.props.children}
          </div>
 
     );

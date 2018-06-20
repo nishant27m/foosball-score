@@ -4,10 +4,10 @@ export default class Sidebar extends Component {
 
   render() {
     return(<div className="sidenav">
-      <a href="#">Dashboard</a>
-      <a href="#">New Player</a>
-      <a href="#">New Team</a>
-      <a href="#">Add Match Details</a>
+      <a href="dashboard">Dashboard</a>
+      <a href="addPlayer">New Player</a>
+      <a href="addTeam">New Team</a>
+      <a href="addMatch">Add Match Details</a>
     </div>);
   }
 }

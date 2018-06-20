@@ -10,9 +10,13 @@ export default class TeamList extends Component {
 
     render() {
         const teamsNode = this.teams.map((team) => {
-            return (<div class="h-divider" /><Team team={team} key={team.id}/><div class="h-divider" />)
+            return (<div>
+                        <div class="h-divider" />
+                        <Team team={team} key={team.id}/>
+                        <div class="h-divider" />
+                     </div>);
         });
-        return (<div className="list-group" style={{marginTop:'30px'}}>{playersNode}</div>);
+        return (<div className="list-group" style={{marginTop:'30px'}}>{teamsNode}</div>);
     }
 
 }

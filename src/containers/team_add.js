@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PlayerList from '../components/player_list';
+import TeamList from '../components/team_list';
 
 
 export default class TeamAdd extends Component {
@@ -34,10 +34,10 @@ export default class TeamAdd extends Component {
 
 }
 
-const TeamAddForm = ({addPlayer}) => {
+const TeamAddForm = ({addTeam}) => {
                             let input;
                             return (
-                            <form onSubmit={(e) => {e.preventDefault(); addPlayer(input.value); input.value = '';}}>
+                            <form onSubmit={(e) => {e.preventDefault(); addTeam(input.value); input.value = '';}}>
                                 <input className="form-control col-md-12" ref={node => { input = node; } } />
                                 <input className="form-control col-md-12" ref={node => { input = node; } } />
                                 <button />
