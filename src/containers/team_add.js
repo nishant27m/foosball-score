@@ -1,46 +1,16 @@
 import React, { Component } from 'react';
 import TeamList from '../components/team_list';
 import { Field, reduxForm } from 'redux-form';
-import DropdownList from 'react-widgets/lib/DropdownList';
-import SelectList from 'react-widgets/lib/SelectList';
-import Multiselect from 'react-widgets/lib/Multiselect';
-import DateTimePicker from 'react-widgets/lib/DateTimePicker';
+import { renderInput, renderMultiselect, renderSelectList, renderDateTimePicker } from '../components/react_formwidgets';
+import { createTeam } from '../actions/index';
 
 const colors = [ { color: 'Red', value: 'ff0000' },
   { color: 'Green', value: '00ff00' },
   { color: 'Blue', value: '0000ff' } ]
 
-const renderDropdownList = ({ input, data, valueField, textField }) =>
-  <DropdownList {...input}
-    data={data}
-    valueField={valueField}
-    textField={textField}
-    onChange={input.onChange} />
-
-const renderMultiselect = ({ input, data, valueField, textField }) =>
-  <Multiselect {...input}
-    onBlur={() => input.onBlur()}
-    value={input.value || []} // requires value to be an array
-    data={data}
-    valueField={valueField}
-    textField={textField}
-  />
-
-const renderSelectList = ({ input, data }) =>
-  <SelectList {...input}
-    onBlur={() => input.onBlur()}
-    data={data} />
-
-const renderDateTimePicker = ({ input: { onChange, value }, showTime }) =>
-  <DateTimePicker
-    onChange={onChange}
-    format="DD MMM YYYY"
-    time={showTime}
-    value={!value ? null : new Date(value)}
-  />
 
 
-export default class TeamAdd extends Component {
+class TeamAdd extends Component {
 
     constructor(props) {
         super(props);
@@ -73,17 +43,26 @@ export default class TeamAdd extends Component {
 }
 
 
-const TeamAddForm = ({addTeam}) => {
-                            let input;
-                            return (
-                            <form onSubmit={(e) => {e.preventDefault(); addTeam(input.value); input.value = '';}}>
-                                <input className="form-control col-md-12" ref={node => { input = node; } } />
-                                <input className="form-control col-md-12" ref={node => { input = node; } } />
-                                <button />
-                                <br/>
-                            </form>);
-                        };
+const TeamAddForm = props  => {
+    const { handleSubmit, pristine, reset, submitting } = props;
+    return (
+        <form onSubmit={handleSubmit(createTeam)}>
+            <div>
+                <label>Team Name</label>
+                <Field name="teamName" component={renderInput} type="" placeholder="Enter Team Name"/>
+            </div>
+            <div>
+                <label>Select Players</label>
+                <Field name="players" component={renderMultiselect} data={[ 'Guitar', 'Cycling', 'Hiking' ]}/>
+            </div>
+            <div>
+                <button type="submit" disabled={pristine || submitting}>Submit</button>
+                <button type="button" disabled={pristine || submitting} onClick={reset}>Reset Values </button>
+            </div>
+        </form>
+    )
+};
 
-ReactWidgetsForm = reduxForm({form: 'reactWidgets'})(TeamAddForm)
-
-export default ReactWidgetsForm
+export default reduxForm({
+        form: 'NewTeam'
+        }, null, { createTeam } )(TeamAddForm);

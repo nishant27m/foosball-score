@@ -5,3 +5,7 @@ export  function selectBook(book) {
         payload : book
     };
 }
+
+export  function createTeam(props) {
+    console.dir(props);
+}
