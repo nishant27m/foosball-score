@@ -52,7 +52,7 @@ const TeamAddForm = props  => {
                 <Field name="teamName" component={renderInput} type="" placeholder="Enter Team Name"/>
             </div>
             <div>
-                <label>Select Players</label>
+                <label>Players</label>
                 <Field name="players" component={renderMultiselect} data={[ 'Guitar', 'Cycling', 'Hiking' ]}/>
             </div>
             <div>
@@ -63,6 +63,19 @@ const TeamAddForm = props  => {
     )
 };
 
+
+function validate(values) {
+  var errors = {};
+  if(!values.teamName) {
+    errors.teamName = 'Please enter valid Team Name';
+  }
+  if(values.players === undefined || values.players.length == 0) {
+    errors.players = 'Select atleast one player';
+  }
+  return errors;
+}
+
 export default reduxForm({
-        form: 'NewTeam'
+        form: 'NewTeam',
+        validate : validate
         }, null, { createTeam } )(TeamAddForm);

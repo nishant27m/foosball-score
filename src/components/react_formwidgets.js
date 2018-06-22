@@ -8,34 +8,38 @@ import momentLocalizer from "react-widgets-moment";
 Moment.locale('en');
 momentLocalizer();
 
-export const renderInput = ({ input, label, type, placeholder}) => (
-      <div className='form__group'>
-        <div className='relative'>
+export const renderInput = ({ input, label, type, placeholder, meta: {touched, error} }) => (
+      <div className='form-group'>
           <input
             {...input}
             placeholder={placeholder}
             className="form-control"
           />
-        </div>
+          <div className="text-help">
+            {touched ? error : ''}
+          </div>
       </div>
     );
 
 
-export const renderDropdownList = ({ input, data, valueField, textField }) =>
-  <DropdownList {...input}
-    data={data}
-    valueField={valueField}
-    textField={textField}
-    onChange={input.onChange} />
+export const renderDropdownList = ({ input, data, valueField, textField, meta: {touched, error}  }) => (
+  <div>
+    <DropdownList {...input} data={data} valueField={valueField} textField={textField} onChange={input.onChange} />
+    <div className="text-help">
+      {touched ? error : ''}
+    </div>
+  </div>
+);
 
-export const renderMultiselect = ({ input, data, valueField, textField }) =>
-  <Multiselect {...input}
-    onBlur={() => input.onBlur()}
-    value={input.value || []} // requires value to be an array
-    data={data}
-    valueField={valueField}
-    textField={textField}
-  />
+export const renderMultiselect = ({ input, data, valueField, textField, meta: {touched, error} }) => (
+  <div>
+    <Multiselect {...input} onBlur={() => input.onBlur()} value={input.value || []}
+      data={data} valueField={valueField} textField={textField} />
+    <div className="text-help">
+      {touched && error}
+    </div>
+  </div>
+)
 
 export const renderSelectList = ({ input, data }) =>
   <SelectList {...input}
