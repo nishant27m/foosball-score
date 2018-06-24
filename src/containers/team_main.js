@@ -1,22 +1,18 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { renderInput, renderMultiselect, renderSelectList, renderDateTimePicker } from '../components/react_formwidgets';
 import Team from './team';
-import TeamList from '../components/team_list';
+import TeamList from './team_list';
+import {fetchTeams} from '../actions';
 
-
-
-export default class TeamAdd extends Component {
+class TeamMain extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            teams : []
-        }
     }
 
     componentDidMount() {
-
+        this.props.fetchTeams();
     }
 
     addTeam(val) {
@@ -30,8 +26,9 @@ export default class TeamAdd extends Component {
         return(
         <div>
             <Team/>
-            <TeamList teams = {this.state.teams}/>
+            <TeamList/>
         </div>);
     }
-
 }
+
+export default connect(null, {fetchTeams})(TeamMain);

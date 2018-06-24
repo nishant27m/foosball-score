@@ -1,10 +1,13 @@
 import { combineReducers } from 'redux';
-import BooksReducers from './reducer_books';
 import { reducer as formReducer } from 'redux-form';
-
+import PlayersReducers from './reducer_players';
+import TeamsReducers from './reducer_teams';
+import MatchesReducers from './reducer_teams';
 
 const rootReducer = combineReducers({
-    books: BooksReducers,
+    players: PlayersReducers,
+    teams: TeamsReducers,
+    matches: MatchesReducers,
     form: formReducer
 });
 

@@ -18,11 +18,15 @@ class Match extends Component {
             <form onSubmit={handleSubmit(createMatch)}>
                 <div className="form-group">
                     <label>Team 1</label>
-                    <Field name="team1" component={renderMultiselect} data={[ 'Guitar', 'Cycling', 'Hiking' ]}/>
+                    <Field name="team1" component={renderSelectList} data={[ 'Guitar', 'Cycling', 'Hiking' ]}/>
                 </div>
                 <div className="form-group">
                     <label>Team 2</label>
-                    <Field name="team2" component={renderMultiselect} data={[ 'Guitar', 'Cycling', 'Hiking' ]}/>
+                    <Field name="team2" component={renderSelectList} data={[ 'Guitar', 'Cycling', 'Hiking' ]}/>
+                </div>
+                <div className="form-group">
+                    <label>Winner</label>
+                    <Field name="winner" component={renderSelectList} data={[ 'Guitar', 'Cycling', 'Hiking' ]}/>
                 </div>
                 <div className="form-group">
                     <label>Date Of Match</label>
