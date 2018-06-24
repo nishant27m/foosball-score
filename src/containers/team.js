@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { renderInput, renderMultiselectDropdown, renderSelectList, renderDateTimePicker } from '../components/react_formwidgets';
+import { renderInput, renderMultiselect, renderMultiselectDropdown, renderSelectList, renderDateTimePicker } from '../components/react_formwidgets';
 import { createTeam, fetchPlayers } from '../actions/index';
 import {GET_PLAYER} from '../actions/index';
 import {connect} from 'react-redux';
@@ -17,7 +17,8 @@ class Team extends Component {
   }
 
   onSubmit(values) {
-      this.props.createTeam(values, () => {
+    values.players = _.map(values.players, 'id');
+    this.props.createTeam(values, () => {
         this.props.history.push('addTeam');
       });
   }
@@ -41,8 +42,8 @@ class Team extends Component {
                 </div>
                 <div className="form-group">
                     <label>Players</label>
-                    <Field name="players" component={renderMultiselectDropdown}
-                    dataSource={dataSource} dataSourceConfig={dataSourceConfig} />
+                    <Field name="players" component={renderMultiselect}
+                    data={dataSource} valueField='id' textField='name' />
                 </div>
                 <div className = "btn-toolbar">
                     <button type="submit" className="btn btn-primary" disabled={pristine || submitting}>Submit</button>
@@ -57,6 +58,7 @@ class Team extends Component {
 
 function validate(values) {
   var errors = {};
+  console.log(values);
   if(!values.teamName) {
     errors.teamName = 'Please enter valid Team Name';
   }

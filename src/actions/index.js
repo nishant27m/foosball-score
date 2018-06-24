@@ -5,7 +5,6 @@ export const FETCH_PLAYERS = 'FETCH_PLAYERS';
 export const FETCH_MATCHES = 'FETCH_MATCHES';
 export const CREATE_PLAYERS = 'CREATE_PLAYERS';
 export const CREATE_TEAM = 'CREATE_TEAM';
-export const GET_PLAYER = 'http://localhost:3001/api/players';
 const ROOT_URL = 'http://localhost:3001';
 
 export  function selectBook(book) {
