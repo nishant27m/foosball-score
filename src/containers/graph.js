@@ -23,7 +23,9 @@ class Graph extends Component {
         stats.push({color: '#f00', value:success});
         stats.push({color: '#0f0', value:fail});
         return (
-          <PieChart slices={stats}/>
+            <div className="graph">
+              <PieChart slices={stats}/>
+            </div>
         );
     }
 
