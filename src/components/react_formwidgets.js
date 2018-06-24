@@ -35,7 +35,19 @@ export const renderMultiselect = ({ input, data, valueField, textField, meta: {t
       {touched && error}
     </div>
   </div>
-)
+);
+
+export const renderMultiselectDropdown = ({ input, dataSource, dataSourceConfig, meta: {touched, error, invalid} }) => (
+  <div className={`form-group ${touched && invalid ? 'has-danger' : ''} `}>
+    <select {...input} className="form-control dropdown-primary" multiple>
+        {dataSource.map(data => <option key={data[dataSourceConfig.label]}
+           value={data[dataSourceConfig.label]}>{data[dataSourceConfig.text]}</option>)}
+    </select>
+    <div className="text-help">
+      {touched && error}
+    </div>
+  </div>
+);
 
 export const renderSelectList = ({ input, data, meta: {touched, error, invalid} }) =>
   <div className={`form-group ${touched && invalid ? 'has-danger' : ''} `}>

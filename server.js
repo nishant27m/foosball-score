@@ -79,7 +79,9 @@ function getPlayers(id, res) {
     queryString += ' where id = '+id;
   }
   pool.query(queryString, function(err, rows, fields) {
-          var status = err ? 400 : 200;
+        if (err) {
+          throw err;
+        }
           if (rows.length > 0) {
               res.json(rows.map((entry) => {
                     const e = {};
@@ -89,14 +91,14 @@ function getPlayers(id, res) {
               );
           }
           else {
-              res.status(status).json([]);
+              res.json([]);
           }
       });
 }
 
 app.post('/api/add_team', (req, res) => {
-  const INSERT_TEAM = `INSERT INTO teams (team_name) values ('${req.body.teamname}')`;
-  console.log(req.body);
+  const INSERT_TEAM = `INSERT INTO teams (team_name) values ('${req.body.teamName}')`;
+  console.log('add_team', req.body);
   pool.query(INSERT_TEAM, function(err, result) {
       if (err) {
         throw err;
@@ -108,9 +110,7 @@ app.post('/api/add_team', (req, res) => {
         }
         getTeams(id_teams, res);
       }
-      res.status(200).end();
   });
-  res.json([]);
 });
 
 function addTeamPlayers(id_teams, id_players) {
