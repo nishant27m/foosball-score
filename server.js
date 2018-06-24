@@ -74,137 +74,197 @@ app.get('/api/players', (req, res) => {
 });
 
 function getPlayers(id, res) {
-  let queryString = 'SELECT * from players';
-  if(id) {
-    queryString += ' where id = '+id;
-  }
-  pool.query(queryString, function(err, rows, fields) {
-        if (err) {
-          throw err;
-        }
-          if (rows.length > 0) {
-              res.json(rows.map((entry) => {
-                    const e = {};
-                    PLAYERS_COLUMNS.forEach((c) => {e[c] = entry[c];});
-                    return e;
-                  })
-              );
-          }
-          else {
-              res.json([]);
-          }
-      });
+
+      try {
+      let queryString = 'SELECT * from players';
+      if(id) {
+        queryString += ' where id = '+id;
+      }
+      pool.query(queryString, function(err, rows, fields) {
+            if (err) {
+              throw err;
+            }
+              if (rows.length > 0) {
+                  res.json(rows.map((entry) => {
+                        const e = {};
+                        PLAYERS_COLUMNS.forEach((c) => {e[c] = entry[c];});
+                        return e;
+                      })
+                  );
+              }
+              else {
+                  res.json([]);
+              }
+          });
+      }
+      catch(error) {
+        console.error(error);
+        // expected output: SyntaxError: unterminated string literal
+        // Note - error messages will vary depending on browser
+      }
+
 }
 
 app.post('/api/add_team', (req, res) => {
-  const INSERT_TEAM = `INSERT INTO teams (team_name) values ('${req.body.teamName}')`;
-  console.log('add_team', req.body);
-  pool.query(INSERT_TEAM, function(err, result) {
-      if (err) {
-        throw err;
-      }
-      else {
-        let id_teams = result.insertId;
-        for(var id_players of req.body.players) {
-            addTeamPlayers(id_teams, id_players);
-        }
-        getTeams(id_teams, res);
-      }
-  });
+
+       try {
+      const INSERT_TEAM = `INSERT INTO teams (team_name) values ('${req.body.teamName}')`;
+      console.log('add_team', req.body);
+      pool.query(INSERT_TEAM, function(err, result) {
+          if (err) {
+            throw err;
+          }
+          else {
+            let id_teams = result.insertId;
+            for(var id_players of req.body.players) {
+                addTeamPlayers(id_teams, id_players);
+            }
+            getTeams(id_teams, res);
+          }
+      });
+    }
+    catch(error) {
+      console.error(error);
+      // expected output: SyntaxError: unterminated string literal
+      // Note - error messages will vary depending on browser
+    }
 });
 
 function addTeamPlayers(id_teams, id_players) {
-  const INSERT_TEAM_PLAYERS = `INSERT INTO team_players (id_players, id_teams)
-            values ('${id_players}', '${id_teams}')`;
-  pool.query(INSERT_TEAM_PLAYERS, function(err, result) {
-      if (err) {
-        throw err;
+      try {
+          const INSERT_TEAM_PLAYERS = `INSERT INTO team_players (id_players, id_teams)
+                    values ('${id_players}', '${id_teams}')`;
+          pool.query(INSERT_TEAM_PLAYERS, function(err, result) {
+              if (err) {
+                throw err;
+              }
+          });
       }
-  });
+      catch(error) {
+        console.error(error);
+        // expected output: SyntaxError: unterminated string literal
+        // Note - error messages will vary depending on browser
+      }
 }
 
 
 app.get('/api/teams', (req, res) => {
-    getTeams(null, res);
+    try {
+        getTeams(null, res);
+     }
+    catch(error) {
+        console.error(error);
+        // expected output: SyntaxError: unterminated string literal
+        // Note - error messages will vary depending on browser
+    }
 });
 
 function getTeams(id_teams, res) {
-  let queryString = `select t.id, t.team_name, p.id as id_players, p.name from teams t
-                        left join team_players tp on tp.id_teams = t.id
-	                      left join players p on  tp.id_players = p.id`;
-  if(id_teams) {
-    queryString += ' where t.id = '+id_teams;
-  }
-  pool.query(queryString, function(err, rows, fields) {
-          if (err) throw err;
-          if (rows.length > 0) {
-              let teamMap = {};
-              rows.map((entry) => {
-                  let id = entry['id'];
-                  let e = {};
-                  if(teamMap[id]) {
-                    e = teamMap[id];
-                  }
-                  else {
-                    teamMap[id] = e;
-                    e.players = [];
-                  }
-                  const player = {};
-                  TEAMS_PLAYERS.forEach((c) => {
-                      if(c === 'id' || c === 'team_name') {
-                          e[c] = entry[c];
-                      }
-                      else {
-                          player[c] = entry[c];
-                      }
-                  })
-                  e.players.push(player);
-              });
-              res.json(teamMap);
+
+        try {
+              let queryString = `select t.id, t.team_name, p.id as id_players, p.name from teams t
+                                    left join team_players tp on tp.id_teams = t.id
+                                      left join players p on  tp.id_players = p.id`;
+              if(id_teams) {
+                queryString += ' where t.id = '+id_teams;
+              }
+              pool.query(queryString, function(err, rows, fields) {
+                  if (err) throw err;
+                  if (rows.length > 0) {
+                      let teamMap = {};
+                      rows.map((entry) => {
+                          let id = entry['id'];
+                          let e = {};
+                          if(teamMap[id]) {
+                            e = teamMap[id];
+                          }
+                          else {
+                            teamMap[id] = e;
+                            e.players = [];
+                          }
+                          const player = {};
+                          TEAMS_PLAYERS.forEach((c) => {
+                              if(c === 'id' || c === 'team_name') {
+                                  e[c] = entry[c];
+                              }
+                              else {
+                                  player[c] = entry[c];
+                              }
+                          })
+                          e.players.push(player);
+                      });
+                      res.json(teamMap);
+                    }
+                });
           }
-      });
+          catch(error) {
+              console.error(error);
+              // expected output: SyntaxError: unterminated string literal
+              // Note - error messages will vary depending on browser
+          }
 }
 
 app.post('/api/add_match', (req, res) => {
-  console.log('add_match', req.body);
-  const INSERT_MATCH = `INSERT INTO match_details(id_team_a, id_team_b, score, id_winner_team, match_date)
-   values ('${req.body.team1.id}', '${req.body.team2.id}', '${req.body.score}', '${req.body.winner.id}', '${req.body.dateofmatch}')`;
-  const e = {};
-  pool.query(INSERT_MATCH, function(err, result) {
-      if (err) {
-        throw err;
-      }
-      else {
-        getMatches(result.insertId, res);
-      }
-  });
+    try {
+      console.log('add_match', req.body);
+      const INSERT_MATCH = `INSERT INTO match_details(id_team_a, id_team_b, score, id_winner_team, match_date)
+       values ('${req.body.team1.id}', '${req.body.team2.id}', '${req.body.score}', '${req.body.winner.id}', '${req.body.dateofmatch}')`;
+      const e = {};
+      pool.query(INSERT_MATCH, function(err, result) {
+          if (err) {
+            throw err;
+          }
+          else {
+            getMatches(result.insertId, res);
+          }
+      });
+    }
+    catch(error) {
+      console.error(error);
+      // expected output: SyntaxError: unterminated string literal
+      // Note - error messages will vary depending on browser
+    }
 });
 
 function getMatches(id_match, res) {
-  let queryString = `select * from match_details`;
-  if(id_match) {
-    queryString += ' where id = '+id_match;
-  }
-  pool.query(queryString, function(err, rows, fields) {
-        if (err) {
-          throw err;
-        }
-        if (rows.length > 0) {
-            res.json(rows.map((entry) => {
-                  const e = {};
-                  MATCH_DETAILS_COLUMNS.forEach((c) => {e[c] = entry[c];});
-                  return e;
-                })
-            );
-        }
-        else {
-            res.json([]);
-        }
-      });
+      try {
+                let queryString = `select * from match_details`;
+                if(id_match) {
+                    queryString += ' where id = '+id_match;
+                }
+                pool.query(queryString, function(err, rows, fields) {
+                    if (err) {
+                        throw err;
+                    }
+                    if (rows.length > 0) {
+                        res.json(rows.map((entry) => {
+                            const e = {};
+                            MATCH_DETAILS_COLUMNS.forEach((c) => {e[c] = entry[c];});
+                            return e;
+                            })
+                        );
+                    }
+                    else {
+                    res.json([]);
+                    }
+                });
+     }
+     catch(error) {
+       console.error(error);
+       // expected output: SyntaxError: unterminated string literal
+       // Note - error messages will vary depending on browser
+     }
 }
 
 app.get('/api/matches', (req, res) => {
-    getMatches(null, res);
+    try {
+        getMatches(null, res);
+    }
+    catch(error) {
+           console.error(error);
+           // expected output: SyntaxError: unterminated string literal
+           // Note - error messages will vary depending on browser
+         }
 });
 
 app.listen(app.get('port'), () => {
