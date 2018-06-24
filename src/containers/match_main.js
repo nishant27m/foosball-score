@@ -11,7 +11,7 @@ class MatchMain extends Component {
   }
 
   componentDidMount() {
-    //  this.props.fetchMatches();
+      this.props.fetchMatches();
   }
 
   render() {

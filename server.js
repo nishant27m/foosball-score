@@ -165,6 +165,48 @@ function getTeams(id_teams, res) {
       });
 }
 
+app.post('/api/add_match', (req, res) => {
+  console.log('add_match', req.body);
+  const INSERT_MATCH = `INSERT INTO match_details(id_team_a, id_team_b, score, id_winner_team, match_date)
+   values ('${req.body.team1.id}', '${req.body.team2.id}', '${req.body.score}', '${req.body.winner.id}', '${req.body.dateofmatch}')`;
+  const e = {};
+  pool.query(INSERT_MATCH, function(err, result) {
+      if (err) {
+        throw err;
+      }
+      else {
+        getMatches(result.insertId, res);
+      }
+  });
+});
+
+function getMatches(id_match, res) {
+  let queryString = `select * from match_details`;
+  if(id_match) {
+    queryString += ' where id = '+id_match;
+  }
+  pool.query(queryString, function(err, rows, fields) {
+        if (err) {
+          throw err;
+        }
+        if (rows.length > 0) {
+            res.json(rows.map((entry) => {
+                  const e = {};
+                  MATCH_DETAILS_COLUMNS.forEach((c) => {e[c] = entry[c];});
+                  return e;
+                })
+            );
+        }
+        else {
+            res.json([]);
+        }
+      });
+}
+
+app.get('/api/matches', (req, res) => {
+    getMatches(null, res);
+});
+
 app.listen(app.get('port'), () => {
   console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console
 });

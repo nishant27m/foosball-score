@@ -6,11 +6,11 @@ class MatchList extends Component {
     return(
       <tr key = {match.id}>
           <td>{match.id}</td>
-          <td>{match.team_a}</td>
-          <td>{match.team_b}</td>
-          <td>{match.winner_team}</td>
+          <td>{match.id_team_a}</td>
+          <td>{match.id_team_b}</td>
+          <td>{match.id_winner_team}</td>
           <td>{match.score}</td>
-          <td>{match.date}</td>
+          <td>{match.match_date}</td>
       </tr>);
   }
 

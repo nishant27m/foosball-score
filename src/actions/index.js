@@ -5,15 +5,7 @@ export const FETCH_PLAYERS = 'FETCH_PLAYERS';
 export const FETCH_MATCHES = 'FETCH_MATCHES';
 export const CREATE_PLAYERS = 'CREATE_PLAYERS';
 export const CREATE_TEAM = 'CREATE_TEAM';
-const ROOT_URL = 'http://localhost:3001';
-
-export  function selectBook(book) {
-    console.log('Book has been seleted : '+book.title);
-    return {
-        type : 'BOOK_SELECTED',
-        payload : book
-    };
-}
+export const CREATE_MATCH = 'CREATE_MATCH';
 
 export  function createPlayer(values, callback) {
   const request = axios.post('http://localhost:3001/api/add_player', values)
@@ -33,8 +25,13 @@ export  function createTeam(values, callback) {
   };
 }
 
-export  function createMatch(props) {
-    console.dir(props);
+export  function createMatch(values, callback) {
+    const request = axios.post('http://localhost:3001/api/add_match', values)
+                      .then(() => callback());
+      return {
+        type: CREATE_MATCH,
+        payload: request
+      };
 }
 
 export function fetchPlayers() {
