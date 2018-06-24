@@ -6,6 +6,18 @@ export const FETCH_MATCHES = 'FETCH_MATCHES';
 export const CREATE_PLAYERS = 'CREATE_PLAYERS';
 export const CREATE_TEAM = 'CREATE_TEAM';
 export const CREATE_MATCH = 'CREATE_MATCH';
+export const GET_STATISTICS = 'GET_STATISTICS';
+
+
+export  function getStatistics(values) {
+
+  const request = axios.get('http://localhost:3001/api/getStatistics', { params: { id: values.id } });
+  return {
+    type: GET_STATISTICS,
+    payload: request
+  };
+}
+
 
 export  function createPlayer(values, callback) {
   const request = axios.post('http://localhost:3001/api/add_player', values)

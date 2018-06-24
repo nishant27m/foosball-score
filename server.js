@@ -267,6 +267,49 @@ app.get('/api/matches', (req, res) => {
          }
 });
 
+app.get('/api/getStatistics', (req, res) => {
+  try {
+          let player_id = req.query.id;
+          let queryString = `select * from match_details md
+                            left join team_players tp on tp.id_teams = md.id_team_a || tp.id_teams = md.id_team_b
+                            where tp.id_players = ${player_id}`;
+          pool.query(queryString, function(err, rows, fields) {
+              if (err) {
+                  throw err;
+              }
+              const e = {};
+              let success = 0;
+              let fail = 0;
+              let matches = 0;
+              if (rows.length > 0) {
+                  rows.map((entry) => {
+                      if(entry['id_players'] == player_id) {
+                          matches += 1;
+                          if(entry['id_teams'] == entry['id_winner_team']) {
+                              success += 1;
+                          }
+                          else {
+                              fail += 1;
+                          }
+                      }
+                  });
+                  e.success = success;
+                  e.fail = fail;
+                  e.matches = matches;
+                  res.json(e);
+              }
+              else {
+                res.json([]);
+              }
+          });
+     }
+     catch(error) {
+       console.error(error);
+       // expected output: SyntaxError: unterminated string literal
+       // Note - error messages will vary depending on browser
+     }
+});
+
 app.listen(app.get('port'), () => {
   console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console
 });

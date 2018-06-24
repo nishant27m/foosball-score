@@ -4,7 +4,7 @@ import App from './components/app';
 import PlayerMain from './containers/player_main';
 import TeamMain from './containers/team_main';
 import MatchDetails from './containers/match_main';
-import Dashboard from './containers/dashboard';
+import DashboardMain from './containers/dashboard_main';
 
 
 export default (
@@ -12,6 +12,7 @@ export default (
         <Route path="addPlayer" component={PlayerMain} />
         <Route path="addTeam" component={TeamMain} />
         <Route path="addMatch" component={MatchDetails} />
-        <Route path="dashboard" component={Dashboard} />
+        <Route path="dashboard" component={DashboardMain} />
+        <Route path="/" component={DashboardMain} />
     </Route>
 );
