@@ -6,3 +6,6 @@
 > npm install
 > npm start
 ```
+
+Please click on respective menu for navigation
+Dashboard : Select Player e.g. Nishant and press submit
