@@ -3,7 +3,7 @@ import  { Route, IndexRoute } from 'react-router';
 import App from './components/app';
 import PlayerMain from './containers/player_main';
 import TeamMain from './containers/team_main';
-import MatchDetails from './containers/match_details';
+import MatchDetails from './containers/match_main';
 import Dashboard from './containers/dashboard';
 
 

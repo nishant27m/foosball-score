@@ -15,13 +15,6 @@ class TeamMain extends Component {
         this.props.fetchTeams();
     }
 
-    addTeam(val) {
-        const team = {text : val}
-        this.state.teams.push(team);
-        this.setState({teams: this.state.teams});
-    }
-
-
     render() {
         return(
         <div>

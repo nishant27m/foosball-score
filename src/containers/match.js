@@ -1,16 +1,25 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { renderInput, renderMultiselect, renderSelectList, renderDateTimePicker } from '../components/react_formwidgets';
+import {connect} from 'react-redux';
+import _ from 'lodash';
+import { renderInput, renderMultiselect, renderDropdownList, renderDateTimePicker } from '../components/react_formwidgets';
 import { createMatch } from '../actions/index';
+import {fetchTeams} from '../actions';
+
 class Match extends Component {
 
   constructor(props) {
     super(props);
   }
 
+  componentDidMount() {
+      this.props.fetchTeams();
+  }
 
   render() {
     const { handleSubmit, pristine, reset, submitting } = this.props;
+    let dataSource = _.map(this.props.teams);
+    console.log('dataSource : ', dataSource);
     return (
       <div className="card">
         <div className="card-header">New Match</div>
@@ -18,15 +27,17 @@ class Match extends Component {
             <form onSubmit={handleSubmit(createMatch)}>
                 <div className="form-group">
                     <label>Team 1</label>
-                    <Field name="team1" component={renderSelectList} data={[ 'Guitar', 'Cycling', 'Hiking' ]}/>
+                    <Field name="team1" component={renderDropdownList} data={dataSource}
+                      valueField='id' textField='team_name' />
                 </div>
                 <div className="form-group">
                     <label>Team 2</label>
-                    <Field name="team2" component={renderSelectList} data={[ 'Guitar', 'Cycling', 'Hiking' ]}/>
+                    <Field name="team2" component={renderDropdownList} data={dataSource}
+                      valueField='id' textField='team_name' />
                 </div>
                 <div className="form-group">
                     <label>Winner</label>
-                    <Field name="winner" component={renderSelectList} data={[ 'Guitar', 'Cycling', 'Hiking' ]}/>
+                    <Field name="winner" component={renderDropdownList} data={[ 'Guitar', 'Cycling', 'Hiking' ]}/>
                 </div>
                 <div className="form-group">
                     <label>Date Of Match</label>
@@ -45,20 +56,24 @@ class Match extends Component {
 
 function validate(values) {
   var errors = {};
+  console.log('values : ',values);
   if(!values.team1) {
     errors.team1 = 'Please enter valid Team Name 1';
   }
   if(!values.team2) {
     errors.team2 = 'Please enter valid Team Name 2';
   }
-  console.log('date of match : '+values.dateofmatch);
   if(!values.dateofmatch) {
     errors.dateofmatch = 'Please enter date of match';
   }
   return errors;
 }
 
+function mapStateToProps({ teams }) {
+  return { teams };
+}
+
 export default reduxForm({
         form: 'NewMatch',
         validate : validate
-      }, null, { createMatch } )(Match);
+      })(connect( mapStateToProps, { createMatch, fetchTeams} )(Match));

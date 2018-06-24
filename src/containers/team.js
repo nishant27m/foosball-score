@@ -31,6 +31,7 @@ class Team extends Component {
     };
 
     let dataSource = _.map(this.props.players);
+    console.log('dataSource : ', dataSource);
     return (
       <div className="card">
         <div className="card-header">New Team</div>
