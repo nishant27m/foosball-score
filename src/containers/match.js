@@ -17,7 +17,6 @@ class Match extends Component {
   }
 
   onSubmit(values) {
-    console.log('Match : ', values);
     this.props.createMatch(values, () => {
         this.props.history.push('addMatch');
     });
